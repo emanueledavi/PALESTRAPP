@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
-import TabButton from './components/common/TabButton';
+// import TabButton from './components/common/TabButton';
+import Footer from './components/common/Footer'; // <--- IMPORTAZIONE AGGIUNTA
 import PalestraSection from './components/palestra/PalestraSection';
 import DietaSection from './components/dieta/DietaSection';
 import SpesaSection from './components/spesa/SpesaSection';
@@ -33,7 +34,7 @@ const App = () => {
   // Stato per il modale informativo generico
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [infoModalTitle, setInfoModalTitle] = useState('');
-  const [infoModalMessage, setInfoModalMessage] = useState(''); // Corretto: mancava useState
+  const [infoModalMessage, setInfoModalMessage] = useState('');
   const [infoModalType, setInfoModalType] = useState('info');
 
   // Nuovi stati per le funzionalità avanzate della palestra
@@ -154,9 +155,8 @@ const App = () => {
           openInfoModal={openInfoModal}
         />;
       case 'settings':
-        return <SettingsSection />; // Questo caso ora renderà il componente SettingsSection
+        return <SettingsSection />;
       default:
-        // Se activeTab non corrisponde a nessun caso, torna alla Palestra
         return <PalestraSection
           allWorkoutDataMap={allWorkoutDataMap}
           setAllWorkoutDataMap={setAllWorkoutDataMap}
@@ -175,16 +175,14 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-100 dark:to-gray-200 font-inter antialiased flex flex-col items-center justify-center p-4 sm:p-6">
-      {/* App Container - simulates a mobile app frame */}
-      <div className="w-full max-w-md bg-gray-800 dark:bg-gray-50 rounded-3xl shadow-2xl shadow-teal-500/30 flex flex-col h-[calc(100vh-32px)] sm:h-[calc(100vh-48px)] border border-gray-700 dark:border-gray-300">
-        {/* Header */}
-        <header className="flex-none bg-gradient-to-r from-teal-600 to-emerald-700 dark:from-teal-400 dark:to-emerald-500 text-white dark:text-gray-900 p-4 rounded-t-2xl shadow-lg shadow-teal-500/20">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 font-inter antialiased p-4 sm:p-6">
+      <div className="w-full max-w-md bg-gray-800 rounded-3xl shadow-2xl shadow-teal-500/30 flex flex-col h-[calc(100vh-32px)] sm:h-[calc(100vh-48px)] border border-gray-700">
+        <header className="flex-none bg-gradient-to-r from-teal-600 to-emerald-700 text-white p-4 rounded-t-2xl shadow-lg shadow-teal-500/20">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-extrabold tracking-wide text-center flex-grow">La Mia Palestra Web</h1>
             <button
               onClick={() => handleOpenCalendarModal(new Date())}
-              className="p-2 bg-teal-600 dark:bg-teal-700 text-white dark:text-white rounded-full shadow-lg hover:bg-teal-700 transition-colors duration-200 ml-4"
+              className="p-2 bg-teal-600 text-white rounded-full shadow-lg hover:bg-teal-700 transition-colors duration-200 ml-4"
               aria-label="Apri Calendario"
             >
               <CalendarDays size={20} />
@@ -192,40 +190,13 @@ const App = () => {
           </div>
         </header>
 
-        {/* Main Content Area */}
-        {/* Usiamo 'flex-grow' per far sì che questo div occupi tutto lo spazio rimanente e 'overflow-y-auto' per abilitare lo scroll. */}
-        {/* Il 'pb-20' aggiunge un padding inferiore per evitare che il contenuto sia coperto dalla navbar. */}
-        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-900 pb-20">
+        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 text-gray-100 pb-20">
           {renderContent()}
         </main>
 
-        {/* Navigation Tabs - Reso fisso in basso rispetto al contenitore app. */}
-        <nav className="flex-none flex justify-around bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 py-3 shadow-inner shadow-gray-900/50 dark:shadow-gray-100/50 border-t border-gray-600 dark:border-gray-300 rounded-b-2xl">
-          <TabButton
-            icon={<Dumbbell size={20} />}
-            label="Palestra"
-            isActive={activeTab === 'palestra'}
-            onClick={() => setActiveTab('palestra')}
-          />
-          <TabButton
-            icon={<Utensils size={20} />}
-            label="Dieta"
-            isActive={activeTab === 'dieta'}
-            onClick={() => setActiveTab('dieta')}
-          />
-          <TabButton
-            icon={<ShoppingCart size={20} />}
-            label="Spesa"
-            isActive={activeTab === 'spesa'}
-            onClick={() => setActiveTab('spesa')}
-          />
-          <TabButton
-            icon={<Settings size={20} />}
-            label="Impostazioni"
-            isActive={activeTab === 'settings'}
-            onClick={() => setActiveTab('settings')}
-          />
-        </nav>
+        {/* La barra di navigazione in linea è stata rimossa per fare spazio al componente Footer. */}
+        {/* Usa il componente `Footer` con le prop `activeTab` e `onTabChange` corrette */}
+        <Footer activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
       {/* Modale Calendario */}
@@ -256,19 +227,20 @@ const App = () => {
           setWorkoutTemplates={setWorkoutTemplates}
           openInfoModal={openInfoModal}
           exerciseLibrary={exerciseLibrary}
+          // Corretto: ho pulito la funzione inline
           onAddExerciseToDay={(exerciseId) => {
-            setAllWorkoutDataMap(prevMap => {
-              const newMap = new Map(prevMap);
-              const currentDayWorkout = newMap.get(exerciseModalDateKey) || { exercises: [], isRestDay: false, restDayNote: '' };
-              const exerciseToAdd = exerciseLibrary.get(exerciseId);
-              if (exerciseToAdd) {
+            const exerciseToAdd = exerciseLibrary.get(exerciseId);
+            if (exerciseToAdd) {
+              setAllWorkoutDataMap(prevMap => {
+                const newMap = new Map(prevMap);
+                const currentDayWorkout = newMap.get(exerciseModalDateKey) || { exercises: [], isRestDay: false, restDayNote: '' };
                 const updatedExercises = [...currentDayWorkout.exercises, { ...exerciseToAdd, id: Date.now().toString() + Math.random().toString(), sets: [] }];
                 newMap.set(exerciseModalDateKey, { ...currentDayWorkout, exercises: updatedExercises });
-                openInfoModal("Successo!", `Esercizio '${exerciseToAdd.name}' aggiunto al giorno.`, "success");
-              }
-              return newMap;
-            });
-            setIsExerciseLibraryModalOpen(false);
+                return newMap;
+              });
+              openInfoModal("Successo!", `Esercizio '${exerciseToAdd.name}' aggiunto al giorno.`, "success");
+              setIsWorkoutTemplateModalOpen(false); // Chiudi la modale del template
+            }
           }}
         />
       )}
@@ -281,19 +253,20 @@ const App = () => {
           exerciseLibrary={exerciseLibrary}
           setExerciseLibrary={setExerciseLibrary}
           openInfoModal={openInfoModal}
+          // Corretto: ho pulito la funzione inline
           onAddExerciseToDay={(exerciseId) => {
-            setAllWorkoutDataMap(prevMap => {
-              const newMap = new Map(prevMap);
-              const currentDayWorkout = newMap.get(exerciseModalDateKey) || { exercises: [], isRestDay: false, restDayNote: '' };
-              const exerciseToAdd = exerciseLibrary.get(exerciseId);
-              if (exerciseToAdd) {
+            const exerciseToAdd = exerciseLibrary.get(exerciseId);
+            if (exerciseToAdd) {
+              setAllWorkoutDataMap(prevMap => {
+                const newMap = new Map(prevMap);
+                const currentDayWorkout = newMap.get(exerciseModalDateKey) || { exercises: [], isRestDay: false, restDayNote: '' };
                 const updatedExercises = [...currentDayWorkout.exercises, { ...exerciseToAdd, id: Date.now().toString() + Math.random().toString(), sets: [] }];
                 newMap.set(exerciseModalDateKey, { ...currentDayWorkout, exercises: updatedExercises });
-                openInfoModal("Successo!", `Esercizio '${exerciseToAdd.name}' aggiunto al giorno.`, "success");
-              }
-              return newMap;
-            });
-            setIsExerciseLibraryModalOpen(false);
+                return newMap;
+              });
+              openInfoModal("Successo!", `Esercizio '${exerciseToAdd.name}' aggiunto al giorno.`, "success");
+              setIsExerciseLibraryModalOpen(false); // Chiudi la modale della libreria
+            }
           }}
         />
       )}

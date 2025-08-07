@@ -199,10 +199,11 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
                 </ul>
             </div>
 
-            {/* Modale Inserimento Dieta Mensile - AGGIORNATO PER SCORRIMENTO FISSO */}
+            {/* Modale Inserimento Dieta Mensile - CORRETTO PER SCORRIMENTO FISSO SU MOBILE */}
             {isMonthlyDietModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 w-full max-w-md h-full max-h-[90vh] flex flex-col">
+                    {/* Contenitore del modale con layout flessibile */}
+                    <div className="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 w-full max-w-md h-full flex flex-col">
                         <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-700">
                             <h3 className="text-xl font-bold text-yellow-300">Inserisci Dieta Mensile</h3>
                             <button
@@ -258,7 +259,7 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
                             </select>
                         </div>
 
-                        {/* Sezione modificata per garantire uno scorrimento affidabile su mobile */}
+                        {/* Sezione per lo scorrimento del contenuto del modale */}
                         <div className="flex-1 overflow-y-auto space-y-4">
                             {mealTypes.map(mealType => (
                                 <MealInputSection

@@ -15,7 +15,7 @@ const Footer = ({ activeTab, onTabChange }) => {
     ];
 
     return (
-        <footer className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 shadow-lg z-50">
+        <footer className="bg-gray-900 border-t border-gray-700 shadow-lg z-50">
             <nav className="flex justify-around items-center h-16 w-full">
                 {tabs.map((tab) => {
                     const isActive = activeTab === tab.name;
