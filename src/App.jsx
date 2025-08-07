@@ -190,7 +190,7 @@ const App = () => {
           </div>
         </header>
 
-        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 text-gray-100 pb-20">
+        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 text-gray-100 pb-24">
           {renderContent()}
         </main>
 
