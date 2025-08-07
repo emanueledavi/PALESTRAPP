@@ -257,8 +257,8 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
               </select>
             </div>
 
-            {/* Selezione Pasto e Inserimento Alimento */}
-            <div className="flex-grow overflow-y-auto space-y-4">
+            {/* Sezione modificata per garantire uno scorrimento affidabile su mobile */}
+            <div className="flex-1 overflow-y-auto space-y-4">
               {mealTypes.map(mealType => (
                 <MealInputSection
                   key={mealType}
