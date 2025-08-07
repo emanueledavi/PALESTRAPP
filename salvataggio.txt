@@ -1,0 +1,8 @@
+1. # Questo comando aggiunge tutte le modifiche per il commit
+git add . 
+
+2. # Questo comando crea un "punto di salvataggio" con un messaggio descrittivo
+git commit -m "dire quello che si è modificato"
+
+3. # QUesto comando carica le modifiche su GitHub 
+git push

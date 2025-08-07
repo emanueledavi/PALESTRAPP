@@ -1,39 +1,39 @@
-// src/components/common/Footer.jsx
 import React from 'react';
-import TabButton from './TabButton';
-import { Dumbbell, Utensils, ShoppingCart, Settings } from 'lucide-react'; // Aggiunta Settings
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDumbbell, faAppleWhole, faShoppingCart, faCog } from '@fortawesome/free-solid-svg-icons';
 
-const Footer = ({ activeTab, setActiveTab }) => {
-  return (
-    <footer className="bg-gray-900 p-4 shadow-lg z-40 dark:bg-gray-800"> {/* Aggiunta dark mode */}
-      <nav className="flex justify-around">
-        <TabButton
-          icon={<Dumbbell size={24} />}
-          label="Palestra"
-          isActive={activeTab === 'palestra'}
-          onClick={() => setActiveTab('palestra')}
-        />
-        <TabButton
-          icon={<Utensils size={24} />}
-          label="Dieta"
-          isActive={activeTab === 'dieta'}
-          onClick={() => setActiveTab('dieta')}
-        />
-        <TabButton
-          icon={<ShoppingCart size={24} />}
-          label="Spesa"
-          isActive={activeTab === 'spesa'}
-          onClick={() => setActiveTab('spesa')}
-        />
-        <TabButton
-          icon={<Settings size={24} />}
-          label="Impostazioni"
-          isActive={activeTab === 'settings'}
-          onClick={() => setActiveTab('settings')}
-        />
-      </nav>
-    </footer>
-  );
+// Questo componente rappresenta la barra di navigazione inferiore.
+// Gestisce la visualizzazione delle icone e l'interazione con l'utente
+// per cambiare la sezione attiva dell'app.
+const Footer = ({ activeTab, onTabChange }) => {
+    // Definizione dei tab di navigazione con icone e etichette.
+    const tabs = [
+        { name: 'palestra', icon: faDumbbell, label: 'Palestra' },
+        { name: 'dieta', icon: faAppleWhole, label: 'Dieta' },
+        { name: 'spesa', icon: faShoppingCart, label: 'Spesa' },
+        { name: 'settings', icon: faCog, label: 'Impostazioni' },
+    ];
+
+    return (
+        <footer className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 shadow-lg z-50">
+            <nav className="flex justify-around items-center h-16 w-full">
+                {tabs.map((tab) => {
+                    const isActive = activeTab === tab.name;
+                    return (
+                        <button
+                            key={tab.name}
+                            onClick={() => onTabChange(tab.name)}
+                            className={`flex flex-col items-center justify-center p-2 text-sm font-medium transition-all duration-200
+                                ${isActive ? 'text-indigo-400' : 'text-gray-400 hover:text-indigo-300'}`}
+                        >
+                            <FontAwesomeIcon icon={tab.icon} className="text-xl mb-1" />
+                            <span className={`text-xs ${isActive ? 'font-bold' : ''}`}>{tab.label}</span>
+                        </button>
+                    );
+                })}
+            </nav>
+        </footer>
+    );
 };
 
 export default Footer;

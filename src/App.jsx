@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react'; // Aggiunto useEffect per il log
+import React, { useState, useEffect } from 'react';
 import TabButton from './components/common/TabButton';
 import PalestraSection from './components/palestra/PalestraSection';
 import DietaSection from './components/dieta/DietaSection';
@@ -33,7 +33,7 @@ const App = () => {
   // Stato per il modale informativo generico
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [infoModalTitle, setInfoModalTitle] = useState('');
-  const [infoModalMessage, setInfoModalMessage] = '';
+  const [infoModalMessage, setInfoModalMessage] = useState(''); // Corretto: mancava useState
   const [infoModalType, setInfoModalType] = useState('info');
 
   // Nuovi stati per le funzionalità avanzate della palestra
@@ -179,14 +179,12 @@ const App = () => {
       {/* App Container - simulates a mobile app frame */}
       <div className="w-full max-w-md bg-gray-800 dark:bg-gray-50 rounded-3xl shadow-2xl shadow-teal-500/30 flex flex-col h-[calc(100vh-32px)] sm:h-[calc(100vh-48px)] border border-gray-700 dark:border-gray-300">
         {/* Header */}
-        <header className="bg-gradient-to-r from-teal-600 to-emerald-700 dark:from-teal-400 dark:to-emerald-500 text-white dark:text-gray-900 p-4 rounded-t-2xl shadow-lg shadow-teal-500/20">
-          <h1 className="text-2xl font-extrabold tracking-wide flex-grow text-center ml-16">La Mia Palestra Web</h1>
-          
-          {/* Pulsanti in alto a destra (Calendario) */}
-          <div className="flex space-x-2">
+        <header className="flex-none bg-gradient-to-r from-teal-600 to-emerald-700 dark:from-teal-400 dark:to-emerald-500 text-white dark:text-gray-900 p-4 rounded-t-2xl shadow-lg shadow-teal-500/20">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-extrabold tracking-wide text-center flex-grow">La Mia Palestra Web</h1>
             <button
               onClick={() => handleOpenCalendarModal(new Date())}
-              className="p-2 bg-teal-600 dark:bg-teal-700 text-white dark:text-white rounded-full shadow-lg hover:bg-teal-700 transition-colors duration-200"
+              className="p-2 bg-teal-600 dark:bg-teal-700 text-white dark:text-white rounded-full shadow-lg hover:bg-teal-700 transition-colors duration-200 ml-4"
               aria-label="Apri Calendario"
             >
               <CalendarDays size={20} />
@@ -195,12 +193,14 @@ const App = () => {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-900">
+        {/* Usiamo 'flex-grow' per far sì che questo div occupi tutto lo spazio rimanente e 'overflow-y-auto' per abilitare lo scroll. */}
+        {/* Il 'pb-20' aggiunge un padding inferiore per evitare che il contenuto sia coperto dalla navbar. */}
+        <main className="flex-grow p-4 overflow-y-auto bg-gray-800 dark:bg-gray-100 text-gray-100 dark:text-gray-900 pb-20">
           {renderContent()}
         </main>
 
-        {/* Navigation Tabs - Spostato in basso e reso fisso */}
-        <nav className="flex justify-around bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 py-3 shadow-inner shadow-gray-900/50 dark:shadow-gray-100/50 border-t border-gray-600 dark:border-gray-300 rounded-b-2xl">
+        {/* Navigation Tabs - Reso fisso in basso rispetto al contenitore app. */}
+        <nav className="flex-none flex justify-around bg-gray-700 dark:bg-gray-200 text-white dark:text-gray-800 py-3 shadow-inner shadow-gray-900/50 dark:shadow-gray-100/50 border-t border-gray-600 dark:border-gray-300 rounded-b-2xl">
           <TabButton
             icon={<Dumbbell size={20} />}
             label="Palestra"
@@ -256,6 +256,20 @@ const App = () => {
           setWorkoutTemplates={setWorkoutTemplates}
           openInfoModal={openInfoModal}
           exerciseLibrary={exerciseLibrary}
+          onAddExerciseToDay={(exerciseId) => {
+            setAllWorkoutDataMap(prevMap => {
+              const newMap = new Map(prevMap);
+              const currentDayWorkout = newMap.get(exerciseModalDateKey) || { exercises: [], isRestDay: false, restDayNote: '' };
+              const exerciseToAdd = exerciseLibrary.get(exerciseId);
+              if (exerciseToAdd) {
+                const updatedExercises = [...currentDayWorkout.exercises, { ...exerciseToAdd, id: Date.now().toString() + Math.random().toString(), sets: [] }];
+                newMap.set(exerciseModalDateKey, { ...currentDayWorkout, exercises: updatedExercises });
+                openInfoModal("Successo!", `Esercizio '${exerciseToAdd.name}' aggiunto al giorno.`, "success");
+              }
+              return newMap;
+            });
+            setIsExerciseLibraryModalOpen(false);
+          }}
         />
       )}
 
