@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDumbbell, faAppleWhole, faShoppingCart, faCog } from '@fortawesome/free-solid-svg-icons';
+//import { faDumbbell, faAppleWhole, faShoppingCart, faCog } from '@fortawesome/free-solid-svg-icons';
 
 // Questo componente rappresenta la barra di navigazione inferiore.
 // Gestisce la visualizzazione delle icone e l'interazione con l'utente
