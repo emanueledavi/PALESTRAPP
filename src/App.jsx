@@ -12,7 +12,7 @@ import WorkoutTemplateModal from './components/palestra/WorkoutTemplateModal';
 import ExerciseLibraryModal from './components/palestra/ExerciseLibraryModal';
 import WorkoutStatisticsModal from './components/palestra/WorkoutStatisticsModal';
 import SettingsSection from './components/settings/SettingsSection';
-import { Dumbbell, Utensils, ShoppingCart, CalendarDays, Settings } from 'lucide-react';
+//import { Dumbbell, Utensils, ShoppingCart, CalendarDays, Settings } from 'lucide-react';
 import { getDateKey } from './utils/dateHelpers';
 
 const App = () => {
