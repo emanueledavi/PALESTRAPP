@@ -106,6 +106,16 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
         openInfoModal("Successo!", "La dieta è stata salvata correttamente.", "success");
     };
 
+    // Funzione per salvare il piano alimentare del giorno corrente
+    const handleSaveCurrentDayDiet = () => {
+        const dateKey = getDateKey(selectedDate);
+        const dailyPlan = allDietDataMap.get(dateKey) || getEmptyDailyDietPlan();
+        
+        // Qui andrà la logica per salvare il piano del giorno su Firestore
+        console.log(`Saving diet plan for ${dateKey}:`, dailyPlan);
+        openInfoModal("Successo!", `Il piano alimentare per il ${formatFullDate(selectedDate)} è stato salvato (simulato).`, "success");
+    };
+
     // Ottieni il piano alimentare per il giorno attualmente selezionato nella vista principale
     const currentDayDietPlan = allDietDataMap.get(getDateKey(selectedDate)) || getEmptyDailyDietPlan();
 
@@ -179,6 +189,14 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
                     <p className="text-gray-400 text-center py-4">Nessun piano alimentare per questo giorno.</p>
                 )}
             </div>
+
+            {/* Pulsante per salvare il piano alimentare del giorno corrente */}
+            <button
+                onClick={handleSaveCurrentDayDiet}
+                className="w-full mt-4 p-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors duration-200 flex items-center justify-center"
+            >
+                <Save size={24} className="mr-2" /> Salva Piano del Giorno
+            </button>
 
             {/* Pulsante per aprire il modale di inserimento mensile */}
             <button
@@ -275,7 +293,7 @@ const DietaSection = ({ allDietDataMap, setAllDietDataMap, onOpenCalendarModal, 
                             ))}
                         </div>
 
-                        {/* Pulsante Salva */}
+                        {/* Pulsante Salva nel Modale */}
                         <div className="mt-6 pt-4 border-t border-gray-700 flex justify-end">
                             <button
                                 onClick={handleSaveMonthlyDiet}
